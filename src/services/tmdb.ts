@@ -1,23 +1,68 @@
 import { TMDbResponse, TMDbVideoResponse, Movie } from '../types';
+import * as mockData from './mockData';
 
 const TMDB_BASE_URL = 'https://api.themoviedb.org/3';
 const TMDB_API_KEY = import.meta.env.VITE_TMDB_API_KEY || process.env.TMDB_API_KEY;
 const TMDB_IMAGE_BASE_URL = 'https://image.tmdb.org/t/p';
 
 if (!TMDB_API_KEY) {
-  console.warn('TMDb API key not found. Please set VITE_TMDB_API_KEY or TMDB_API_KEY.');
+  console.warn('TMDb API key not found. Using mock data.');
 }
 
 class TMDbService {
   private apiKey: string;
+  private useMockData: boolean;
 
   constructor() {
     this.apiKey = TMDB_API_KEY || '';
+    this.useMockData = !this.apiKey;
   }
 
   private async makeRequest<T>(endpoint: string): Promise<T> {
-    if (!this.apiKey) {
-      throw new Error('TMDb API key is required');
+    if (this.useMockData) {
+      console.log(`[Mock] Requesting endpoint: ${endpoint}`);
+      if (endpoint.startsWith('/trending')) {
+        return mockData.mockTrending as unknown as T;
+      }
+      if (endpoint.startsWith('/movie/popular')) {
+        return mockData.mockPopularMovies as unknown as T;
+      }
+      if (endpoint.startsWith('/tv/popular')) {
+        return mockData.mockPopularTV as unknown as T;
+      }
+      if (endpoint.startsWith('/movie/top_rated')) {
+        return mockData.mockTopRated as unknown as T;
+      }
+      if (endpoint.includes('&with_genres=28')) {
+        return mockData.mockActionMovies as unknown as T;
+      }
+      if (endpoint.includes('&with_genres=35')) {
+        return mockData.mockComedyMovies as unknown as T;
+      }
+      if (endpoint.includes('&with_genres=18')) {
+        return mockData.mockDramaMovies as unknown as T;
+      }
+      if (endpoint.includes('&with_genres=27')) {
+        return mockData.mockHorrorMovies as unknown as T;
+      }
+      if (endpoint.startsWith('/search/multi')) {
+        return mockData.mockSearchResults as unknown as T;
+      }
+      if (endpoint.match(/\/movie\/\d+\/videos/)) {
+        return mockData.mockMovieVideos as unknown as T;
+      }
+      if (endpoint.match(/\/tv\/\d+\/videos/)) {
+        return mockData.mockTVVideos as unknown as T;
+      }
+      if (endpoint.match(/\/movie\/\d+/)) {
+        return mockData.mockMovieDetails as unknown as T;
+      }
+      if (endpoint.match(/\/tv\/\d+/)) {
+        return mockData.mockTVDetails as unknown as T;
+      }
+
+      // Fallback for any unhandled endpoint
+      return { results: [] } as unknown as T;
     }
 
     const url = `${TMDB_BASE_URL}${endpoint}?api_key=${this.apiKey}`;
