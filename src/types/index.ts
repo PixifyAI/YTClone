@@ -1,55 +1,26 @@
-export interface Movie {
-  id: number;
-  title: string;
-  name?: string;
-  overview: string;
-  poster_path: string;
-  backdrop_path: string;
-  release_date: string;
-  first_air_date?: string;
-  vote_average: number;
-  genre_ids: number[];
-  media_type?: 'movie' | 'tv';
-  original_language: string;
-  popularity: number;
-  adult?: boolean;
-}
+/**
+ * This file contains all the type definitions for the AIflix application.
+ * It is focused on YouTube data structures.
+ */
 
-export interface Genre {
-  id: number;
-  name: string;
-}
-
-export interface TMDbResponse {
-  page: number;
-  results: Movie[];
-  total_pages: number;
-  total_results: number;
-}
-
-export interface VideoResult {
-  id: string;
-  key: string;
-  name: string;
-  site: string;
-  type: string;
-  published_at: string;
-}
-
-export interface TMDbVideoResponse {
-  id: number;
-  results: VideoResult[];
-}
-
+/**
+ * Represents a single video item as returned by the YouTube API (search endpoint).
+ */
 export interface YouTubeVideo {
   id: {
     videoId: string;
   };
   snippet: {
-    title: string;
+    title:string;
     description: string;
     thumbnails: {
       high: {
+        url: string;
+      };
+      medium: {
+        url: string;
+      };
+      default: {
         url: string;
       };
     };
@@ -58,6 +29,9 @@ export interface YouTubeVideo {
   };
 }
 
+/**
+ * Represents the overall response from the YouTube API search endpoint.
+ */
 export interface YouTubeSearchResponse {
   items: YouTubeVideo[];
   nextPageToken?: string;
@@ -67,14 +41,18 @@ export interface YouTubeSearchResponse {
   };
 }
 
-export interface ContentRow {
+/**
+ * Represents a row of videos on the UI, typically for a single channel.
+ */
+export interface VideoContentRow {
   title: string;
-  movies: Movie[];
-  endpoint: string;
+  videos: YouTubeVideo[];
 }
 
-export interface PlayerState {
+/**
+ * Represents the state of the video player.
+ */
+export interface YouTubePlayerState {
   isOpen: boolean;
-  videoKey: string | null;
-  movie: Movie | null;
+  video: YouTubeVideo | null;
 }

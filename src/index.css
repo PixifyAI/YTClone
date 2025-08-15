@@ -27,7 +27,7 @@
   }
 }
 
-/* Netflix-specific styles */
+/* AIflix-specific styles */
 * {
   box-sizing: border-box;
 }
@@ -96,12 +96,12 @@ body {
   -webkit-line-clamp: 3;
 }
 
-/* Netflix red accent */
-.netflix-red {
+/* AIflix red accent */
+.aiflix-red {
   background-color: #e50914;
 }
 
-.netflix-red-hover:hover {
+.aiflix-red-hover:hover {
   background-color: #f40612;
 }
 
@@ -165,7 +165,7 @@ input:focus-visible {
   border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
-/* Netflix-style gradient overlays */
+/* AIflix-style gradient overlays */
 .gradient-overlay-bottom {
   background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, transparent 100%);
 }

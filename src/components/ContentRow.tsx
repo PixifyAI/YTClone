@@ -1,15 +1,15 @@
 import React, { useRef, useState } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
-import { Movie } from '../types';
-import MovieCard from './MovieCard';
+import { YouTubeVideo } from '../types';
+import VideoCard from './VideoCard';
 
 interface ContentRowProps {
   title: string;
-  movies: Movie[];
-  onMovieSelect: (movie: Movie) => void;
+  videos: YouTubeVideo[];
+  onVideoSelect: (video: YouTubeVideo) => void;
 }
 
-const ContentRow: React.FC<ContentRowProps> = ({ title, movies, onMovieSelect }) => {
+const ContentRow: React.FC<ContentRowProps> = ({ title, videos, onVideoSelect }) => {
   const scrollRef = useRef<HTMLDivElement>(null);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(true);
@@ -44,9 +44,9 @@ const ContentRow: React.FC<ContentRowProps> = ({ title, movies, onMovieSelect })
     const handleResize = () => checkScrollability();
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
-  }, [movies]);
+  }, [videos]);
 
-  if (!movies || movies.length === 0) {
+  if (!videos || videos.length === 0) {
     return null;
   }
 
@@ -79,7 +79,7 @@ const ContentRow: React.FC<ContentRowProps> = ({ title, movies, onMovieSelect })
           </button>
         )}
         
-        {/* Movies Grid */}
+        {/* Videos Grid */}
         <div
           ref={scrollRef}
           onScroll={checkScrollability}
@@ -89,11 +89,11 @@ const ContentRow: React.FC<ContentRowProps> = ({ title, movies, onMovieSelect })
             msOverflowStyle: 'none'
           }}
         >
-          {movies.map((movie, index) => (
-            <div key={`${movie.id}-${index}`} className="flex-none w-48 md:w-56">
-              <MovieCard
-                movie={movie}
-                onPlay={onMovieSelect}
+          {videos.map((video, index) => (
+            <div key={video.id.videoId} className="flex-none w-48 md:w-56">
+              <VideoCard
+                video={video}
+                onPlay={onVideoSelect}
                 delay={index * 100}
               />
             </div>
