@@ -8,7 +8,9 @@
  */
 export interface YouTubeVideo {
   id: {
-    videoId: string;
+    kind: string;
+    videoId?: string;
+    channelId?: string;
   };
   snippet: {
     title:string;
