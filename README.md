@@ -25,6 +25,33 @@ export default tseslint.config({
 })
 ```
 
+---
+
+## AIflix Setup
+
+This project is configured to work with the YouTube Data API to fetch videos for the AIflix platform. To run this project, you will need to provide a YouTube API key.
+
+### Vercel Deployment
+
+If you are deploying this project to Vercel, you need to set the `YOUTUBE_API_KEY` environment variable in your Vercel project settings.
+
+1.  Go to your project's dashboard on Vercel.
+2.  Navigate to the "Settings" tab.
+3.  Click on "Environment Variables" in the left sidebar.
+4.  Add a new environment variable with the key `YOUTUBE_API_KEY` and paste your YouTube Data API key as the value.
+5.  Make sure the variable is available to the Serverless Function environment.
+6.  Redeploy your project for the changes to take effect.
+
+### Local Development
+
+For local development, create a file named `.env` in the root of the project and add the following line:
+
+```
+YOUTUBE_API_KEY=your_youtube_api_key_here
+```
+
+The `.env` file is included in `.gitignore` and will not be committed to the repository.
+
 - Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
 - Optionally add `...tseslint.configs.stylisticTypeChecked`
 - Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:

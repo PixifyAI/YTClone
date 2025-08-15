@@ -1,18 +1,20 @@
 import React from 'react';
 import Header from './components/Header';
-import Hero from './components/Hero';
 import ContentRow from './components/ContentRow';
 import VideoPlayer from './components/VideoPlayer';
-import { useMovies } from './hooks/useMovies';
-import { useVideoPlayer } from './hooks/useVideoPlayer';
+import { useVideos } from './hooks/useVideos';
+import { useYouTubePlayer } from './hooks/useYouTubePlayer';
+import { useSearch } from './hooks/useSearch';
+import { YouTubeVideo } from './types';
 import './index.css';
 
 function App() {
-  const { heroMovie, contentRows, loading, error } = useMovies();
-  const { playerState, trailerKey, openPlayer, closePlayer } = useVideoPlayer();
+  const { videoRows, loading, error } = useVideos();
+  const { playerState, videoKey, openPlayer, closePlayer } = useYouTubePlayer();
+  const { searchQuery, setSearchQuery, filteredRows } = useSearch(videoRows);
 
-  const handleMovieSelect = (movie: any) => {
-    openPlayer(movie);
+  const handleVideoSelect = (video: YouTubeVideo) => {
+    openPlayer(video);
   };
 
   if (loading) {
@@ -20,8 +22,8 @@ function App() {
       <div className="min-h-screen bg-black flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-red-600 mx-auto mb-4"></div>
-          <h2 className="text-white text-xl font-semibold mb-2">Loading Netflix</h2>
-          <p className="text-gray-400">Fetching the latest movies and shows...</p>
+          <h2 className="text-white text-xl font-semibold mb-2">Loading AIflix</h2>
+          <p className="text-gray-400">Fetching the latest AI videos...</p>
         </div>
       </div>
     );
@@ -48,28 +50,31 @@ function App() {
   return (
     <div className="min-h-screen bg-black">
       {/* Header */}
-      <Header onMovieSelect={handleMovieSelect} />
-      
-      {/* Hero Section */}
-      <Hero movie={heroMovie} onPlayMovie={handleMovieSelect} />
+      <Header
+        searchQuery={searchQuery}
+        setSearchQuery={setSearchQuery}
+      />
       
       {/* Content Rows */}
-      <div className="pb-16">
-        {contentRows.map((row, index) => (
+      <div className="py-24">
+        {filteredRows.map((row, index) => (
           <ContentRow
-            key={`${row.endpoint}-${index}`}
+            key={`${row.title}-${index}`}
             title={row.title}
-            movies={row.movies}
-            onMovieSelect={handleMovieSelect}
+            videos={row.videos}
+            onVideoSelect={handleVideoSelect}
           />
         ))}
+        {filteredRows.length === 0 && !loading && (
+          <div className="text-center text-white">No videos found.</div>
+        )}
       </div>
       
       {/* Video Player Modal */}
       <VideoPlayer
         isOpen={playerState.isOpen}
-        movie={playerState.movie}
-        trailerKey={trailerKey}
+        video={playerState.video}
+        videoKey={videoKey}
         onClose={closePlayer}
       />
     </div>
