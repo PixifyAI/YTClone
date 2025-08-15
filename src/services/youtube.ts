@@ -57,7 +57,7 @@ class YouTubeService {
       if (!channelSearch.items || channelSearch.items.length === 0) {
         throw new Error(`Could not find channel: ${channelName}`);
       }
-      const channelId = channelSearch.items[0].id.videoId; // Note: for channels, the search result gives videoId field for channelId
+      const channelId = channelSearch.items[0].id.channelId;
 
       // Step 2: Use the found channelId to get the latest videos
       const videoSearch = await this.makeRequest<YouTubeSearchResponse>('/search', {
